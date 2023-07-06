@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .graph-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.graph {
+    
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(green 0%, yellow 50%, red 100%);
+  clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 0);
+
+
+}
+
+.graph-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <script>
+        function createCircularGraph(value) {
+  var graphElement = document.querySelector('.graph');
+  var labelElement = document.querySelector('.graph-label');
+
+  // Calculate the angle based on the value out of 10
+  var angle = (value / 10) * 360;
+
+  // Apply the angle as a CSS transform
+  graphElement.style.transform = `rotate(${angle}deg)`;
+
+  // Calculate the clip-path value based on the angle
+  var clipPathValue = `polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 0)`;
+  if (angle <= 180) {
+    clipPathValue = `polygon(50% 50%, 50% 0, 100% 0, ${Math.tan(angle * Math.PI / 180) * 100 + 50}% 50%, 50% 50%)`;
+  }
+
+  // Apply the clip-path value to show the value part
+  graphElement.style.clipPath = clipPathValue;
+
+  // Update the label with the value
+  labelElement.textContent = value.toString();
+}
+
+// Example usage: create a circular graph with an initial value of 7 out of 10
+createCircularGraph(7);
+
+// Example usage: change the value to 4 out of 10
+createCircularGraph(4);
+
+
+// Example usage: create a circular graph with an initial value of 7 out of 10
+
+
+// Example usage: change the value to 4 out of 10
+createCircularGraph(4);
+
+
+// Example usage: create a circular graph with a value of 7 out of 10
+
+
+
+    </script>
+    <div class="graph-container">
+        <div class="graph"></div>
+        <span class="graph-label"></span>
+      </div>
+      
+</body>
+</html>

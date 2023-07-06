@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+</head>
+<body>
+    <input type="file" id="resumeFileInput">
+  <button onclick="extractTextFromPDF()">Calculate Score</button>
+
+  <div id="resultContainer"></div>
+  <script>
+    const PDFJS = require('pdfjs-dist');
+
+// Function to extract text from a PDF
+async function extractTextFromPDF(pdfPath) {
+  const loadingTask = PDFJS.getDocument(pdfPath);
+  const pdf = await loadingTask.promise;
+  
+  let resumeText = '';
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+    const page = await pdf.getPage(pageNumber);
+    const content = await page.getTextContent();
+    const pageText = content.items.map(item => item.str).join(' ');
+    resumeText += pageText;
+  }
+
+  return resumeText;
+}
+
+// Function to calculate resume score
+function calculateResumeScore(resumeText) {
+  let score = 0;
+
+  // Education section
+  if (resumeText.includes("Bachelor's degree") || resumeText.includes("Master's degree")) {
+    score += 10;
+  }
+
+  // Work experience section
+  if (resumeText.includes("Software engineer") || resumeText.includes("Web developer")) {
+    score += 15;
+  }
+
+  // Skills section
+  if (resumeText.includes("Python") || resumeText.includes("JavaScript")) {
+    score += 5;
+  }
+
+  // Additional criteria and scoring logic can be added here
+
+  return score;
+}
+
+// Usage example
+const pdfPath = document.getElementById('resumeFileInput');;
+
+extractTextFromPDF()
+  .then(resumeText => {
+    const resumeScore = calculateResumeScore(resumeText);
+    resultContainer=document.getElementById(resultContainer).value;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+  </script>
+    
+</body>
+</html>

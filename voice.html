@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice Question and Answer</title>
+  <style>
+    #question {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    #answer {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <meta charset="utf-8" />
+  <title>Demo Web App</title>
+  <link href="./main.css" rel="stylesheet" />
+</head>
+<body>
+  <h1>Question and Answer</h1>
+  <div id="question">Question: What is your favorite color?</div>
+  <grammarly-editor-plugin>
+    <div id="answer">Your Answer: </div>
+  </grammarly-editor-plugin>
+  
+
+  <button id="startButton">Start Recording</button>
+  <button id="stopButton">Stop Recording</button>
+  <button id="submitAnswer">Submit Answer</button>
+
+  <script>
+    var recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+
+    var answerText = "";
+
+    recognition.onresult = function(event) {
+      var currentText = event.results[event.results.length - 1][0].transcript;
+      answerText += currentText;
+      document.getElementById("answer").innerHTML = "Your Answer: " + answerText;
+    }
+
+    document.getElementById("startButton").addEventListener("click", function() {
+      recognition.start();
+    });
+
+    document.getElementById("stopButton").addEventListener("click", function() {
+      recognition.stop();
+    });
+
+    document.getElementById("submitAnswer").addEventListener("click", function() {
+      var sampleAnswer = "Sample Answer: Blue";
+      answerText += "<br>" + sampleAnswer;
+      document.getElementById("answer").innerHTML = "Your Answer: " + answerText;
+      answerText = "";
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@grammarly/editor-sdk?clientId=client_3vidcnu19HYUv8RdHfSRvF"></script>
+</body>
+</html>
